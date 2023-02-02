@@ -12,17 +12,19 @@ interface LayoutProps {
 
 export default function Layout({ titulo, subtitulo, children }: LayoutProps) {
     return (
-        <div>
+        <div className='flex h-screen w-screen'>
             <MenuLateral />
 
-            <Cabecalho
-                titulo={titulo}
-                subtitulo={subtitulo}
-            />
+            <div className='flex flex-col w-full p-7 bg-gray-300'>
+                <Cabecalho
+                    titulo={titulo}
+                    subtitulo={subtitulo}
+                />
 
-            <Conteudo>
-                {children}
-            </Conteudo>
+                <Conteudo>
+                    {children}
+                </Conteudo>
+            </div>
         </div>
     );
 }
