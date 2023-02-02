@@ -12,7 +12,7 @@ export default function MenuItem({ url, texto, icone, className, onClick }: Menu
     function renderizarLink() {
         return (
             <div
-                className={`flex flex-col justify-center items-center w-20 h-20 text-gray-600 ${className}`}
+                className={`flex flex-col justify-center items-center w-20 h-20 dark:text-gray-200 ${className}`}
             >
                 {icone}
 
@@ -25,7 +25,7 @@ export default function MenuItem({ url, texto, icone, className, onClick }: Menu
 
     return (
         <li
-            className='hover:bg-gray-100 cursor-pointer'
+            className='hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer'
             onClick={onClick}
         >
             {
