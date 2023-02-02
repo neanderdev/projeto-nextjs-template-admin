@@ -1,24 +1,46 @@
 import Link from 'next/link';
 
 interface MenuItemProps {
-    url: string;
+    url?: string;
     texto: string;
     icone: JSX.Element;
+    className?: string;
+    onClick?: (evento: any) => void;
 }
 
-export default function MenuItem({ url, texto, icone }: MenuItemProps) {
-    return (
-        <li className='hover:bg-gray-100'>
-            <Link
-                href={url}
-                className='flex flex-col justify-center items-center w-20 h-20'
+export default function MenuItem({ url, texto, icone, className, onClick }: MenuItemProps) {
+    function renderizarLink() {
+        return (
+            <div
+                className={`flex flex-col justify-center items-center w-20 h-20 text-gray-600 ${className}`}
             >
                 {icone}
 
-                <span className='text-xs font-light text-gray-600'>
+                <span className='text-xs font-light'>
                     {texto}
                 </span>
-            </Link>
+            </div>
+        );
+    }
+
+    return (
+        <li
+            className='hover:bg-gray-100 cursor-pointer'
+            onClick={onClick}
+        >
+            {
+                url
+                    ? (
+                        <Link
+                            href={url}
+                        >
+                            {renderizarLink()}
+                        </Link>
+                    )
+                    : (
+                        renderizarLink()
+                    )
+            }
         </li>
     );
 }
