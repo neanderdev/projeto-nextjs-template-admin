@@ -4,6 +4,8 @@ import MenuLateral from './MenuLateral';
 import Cabecalho from './Cabecalho';
 import Conteudo from './Conteudo';
 
+import useAppData from '../../data/hook/useAppData';
+
 interface LayoutProps {
     titulo: string;
     subtitulo: string;
@@ -11,8 +13,10 @@ interface LayoutProps {
 }
 
 export default function Layout({ titulo, subtitulo, children }: LayoutProps) {
+    const { tema } = useAppData();
+
     return (
-        <div className='flex h-screen w-screen'>
+        <div className={`${tema} flex h-screen w-screen`}>
             <MenuLateral />
 
             <div
