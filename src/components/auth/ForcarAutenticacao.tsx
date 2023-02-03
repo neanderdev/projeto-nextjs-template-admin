@@ -41,6 +41,7 @@ export default function ForcarAutenticacao({ children }: ForcarAutenticacaoProps
                 <Image
                     src={loading}
                     alt='Loading'
+                    priority
                 />
             </div>
         );
