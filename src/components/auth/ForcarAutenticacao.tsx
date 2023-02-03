@@ -1,3 +1,4 @@
+import Script from 'next/script';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { ReactNode } from 'react';
@@ -18,6 +19,17 @@ export default function ForcarAutenticacao({ children }: ForcarAutenticacaoProps
     function renderizarConteudo() {
         return (
             <>
+                <Script
+                    id='script-cookie-auth'
+                    dangerouslySetInnerHTML={{
+                        __html: `
+                            if (!document.cookie?.includes("admin-template-nextjs-auth")) {
+                                window.location.href = "/autenticacao"
+                            }
+                        `
+                    }}
+                />
+
                 {children}
             </>
         );
@@ -40,7 +52,7 @@ export default function ForcarAutenticacao({ children }: ForcarAutenticacaoProps
         return renderizarCarregando();
     } else {
         router.push('/autenticacao');
-        
+
         return null;
     }
 }
