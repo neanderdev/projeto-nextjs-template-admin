@@ -16,18 +16,18 @@ interface AuthProviderProps {
     children: ReactNode;
 }
 
-// async function usuarioNormalizado(usuarioFirebase: firebase.User): Promise<Usuario> {
-//     const token = await usuarioFirebase.getIdToken();
+async function usuarioNormalizado(usuarioFirebase: firebase.User): Promise<Usuario> {
+    const token = await usuarioFirebase.getIdToken();
 
-//     return {
-//         uid: usuarioFirebase.uid,
-//         email: usuarioFirebase.email,
-//         nome: usuarioFirebase.displayName,
-//         token: token,
-//         provedor: usuarioFirebase.providerData[0]?.providerId,
-//         imagemUrl: usuarioFirebase.photoURL,
-//     };
-// }
+    return {
+        uid: usuarioFirebase.uid,
+        email: usuarioFirebase.email,
+        nome: usuarioFirebase.displayName,
+        token: token,
+        provedor: usuarioFirebase.providerData[0]?.providerId,
+        imagemUrl: usuarioFirebase.photoURL,
+    };
+}
 
 export function AuthProvider({ children }: AuthProviderProps) {
     const router = useRouter();
@@ -35,9 +35,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const [usuario, setUsuario] = useState<Usuario>({} as Usuario);
 
     async function loginGoogle() {
-        console.log('Login Google...');
+        const resposta = await firebase.auth().signInWithPopup(
+            new firebase.auth.GoogleAuthProvider(),
+        );
 
-        router.push('/');
+        if (resposta.user?.email) {
+            const usuario = await usuarioNormalizado(resposta.user);
+
+            setUsuario(usuario);
+
+            router.push('/');
+        }
     }
 
     return (
