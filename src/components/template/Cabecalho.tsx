@@ -1,5 +1,6 @@
 import Titulo from './Titulo';
 import BotaoAlternarTema from './BotaoAlternarTema';
+import AvatarUsuario from './AvatarUsuario';
 
 import useAppData from '../../data/hook/useAppData';
 
@@ -18,10 +19,14 @@ export default function Cabecalho({ titulo, subtitulo }: CabecalhoProps) {
                 subtitulo={subtitulo}
             />
 
-            <div className='flex flex-grow justify-end'>
+            <div className='flex flex-grow justify-end items-center'>
                 <BotaoAlternarTema
                     tema={tema}
                     alternarTema={alternarTema}
+                />
+
+                <AvatarUsuario
+                    className='ml-3'
                 />
             </div>
         </div>
