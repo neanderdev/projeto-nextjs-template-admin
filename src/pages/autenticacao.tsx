@@ -3,7 +3,11 @@ import { useState } from 'react';
 import AuthInput from '../components/auth/AuthInput';
 import { IconeAtencao } from '../components/icons';
 
+import useAuth from '../data/hook/useAuth';
+
 export default function Autenticacao() {
+    const { usuario, loginGoogle } = useAuth();
+
     const [modo, setModo] = useState<'login' | 'cadastro'>('login');
     const [erro, setErro] = useState<string | null>(null);
     const [email, setEmail] = useState('');
@@ -82,7 +86,7 @@ export default function Autenticacao() {
 
                 <button
                     className='w-full bg-red-500 hover:bg-red-400 text-white rounded-lg px-4 py-3'
-                    onClick={submeter}
+                    onClick={loginGoogle}
                 >
                     Entrar com Google
                 </button>
