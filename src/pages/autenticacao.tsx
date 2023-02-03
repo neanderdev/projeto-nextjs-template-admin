@@ -1,17 +1,29 @@
 import { useState } from 'react';
 
 import AuthInput from '../components/auth/AuthInput';
+import { IconeAtencao } from '../components/icons';
 
 export default function Autenticacao() {
     const [modo, setModo] = useState<'login' | 'cadastro'>('login');
+    const [erro, setErro] = useState<string | null>(null);
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
+
+    function exibirErro(msg: string, tempoEmSegundos = 5) {
+        setErro(msg);
+
+        setTimeout(() => setErro(null), tempoEmSegundos * 1000);
+    }
 
     function submeter() {
         if (modo === 'login') {
             console.log('login');
+
+            exibirErro('Ocorreu um erro no login!', 3);
         } else {
             console.log('cadastrar');
+
+            exibirErro('Ocorreu um erro no cadastro!');
         }
     }
 
@@ -29,6 +41,19 @@ export default function Autenticacao() {
                             : 'Cadastre-se na Plataforma'
                     }
                 </h1>
+
+                {
+                    erro ? (
+                        <div className='flex items-center bg-red-400 text-white py-3 px-5 my-2 border border-red-700 rounded-lg'>
+                            {IconeAtencao()}
+
+                            <span className='ml-3'>
+                                {erro}
+                            </span>
+                        </div>
+                    )
+                        : false
+                }
 
                 <AuthInput
                     tipo='email'
