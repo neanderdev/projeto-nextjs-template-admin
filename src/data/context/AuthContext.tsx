@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
-import { createContext, ReactNode, useState } from 'react';
+import { createContext, ReactNode, useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
 
 import firebase from '../../firebase/config';
 
@@ -29,24 +30,59 @@ async function usuarioNormalizado(usuarioFirebase: firebase.User): Promise<Usuar
     };
 }
 
+function gerenciarCookie(logado: boolean) {
+    if (logado) {
+        Cookies.set('admin-template-nextjs-auth', String(logado), {
+            expires: 7
+        });
+    } else {
+        Cookies.remove('admin-template-nextjs-auth');
+    }
+}
+
 export function AuthProvider({ children }: AuthProviderProps) {
     const router = useRouter();
 
+    const [carregando, setCarregando] = useState(true);
     const [usuario, setUsuario] = useState<Usuario>({} as Usuario);
+
+    async function configurarSessao(usuarioFirebase: firebase.User | null) {
+        if (usuarioFirebase?.email) {
+            const usuario = await usuarioNormalizado(usuarioFirebase);
+
+            setUsuario(usuario);
+
+            gerenciarCookie(true);
+
+            setCarregando(false);
+
+            return usuario.email;
+        } else {
+            setUsuario({} as Usuario);
+
+            gerenciarCookie(false);
+
+            setCarregando(false);
+
+            return false;
+        }
+    }
 
     async function loginGoogle() {
         const resposta = await firebase.auth().signInWithPopup(
             new firebase.auth.GoogleAuthProvider(),
         );
 
-        if (resposta.user?.email) {
-            const usuario = await usuarioNormalizado(resposta.user);
+        await configurarSessao(resposta.user);
 
-            setUsuario(usuario);
-
-            router.push('/');
-        }
+        router.push('/');
     }
+
+    useEffect(() => {
+        const cancelar = firebase.auth().onIdTokenChanged(configurarSessao);
+
+        return () => cancelar();
+    }, []);
 
     return (
         <AuthContext.Provider value={{
