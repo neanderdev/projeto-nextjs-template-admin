@@ -3,7 +3,11 @@ import MenuItem from './MenuItem';
 
 import { IconeAjustes, IconeCasa, IconeSair, IconeSino } from '../icons';
 
+import useAuth from '../../data/hook/useAuth';
+
 export default function MenuLateral() {
+    const { logout } = useAuth();
+
     return (
         <aside className='flex flex-col bg-gray-200 text-gray-700 dark:bg-gray-900 dark:text-gray-200'>
             <div
@@ -36,7 +40,7 @@ export default function MenuLateral() {
                 <MenuItem
                     texto='Sair'
                     icone={IconeSair}
-                    onClick={() => console.log('Sair')}
+                    onClick={logout}
                     className='text-red-600 dark:text-red-400 hover:bg-red-400 hover:text-white dark:hover:text-white'
                 />
             </ul>
